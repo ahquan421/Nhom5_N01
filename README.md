@@ -29,3 +29,8 @@ các nghiệp vụ cho bài toán (tùy chọn).
 
 ### Sửa sinh viên:
 ![image](https://github.com/user-attachments/assets/3eff4a88-59fe-48ba-b0ac-1943546f56c8)
+### Xóa sinh viên:
+![image](https://github.com/user-attachments/assets/badb5eb4-7167-445a-9f1a-96079e7cc5d3)
+
+### Sinh viên đăng kí môn học:
+![image](https://github.com/user-attachments/assets/fb95f846-cf95-4898-91ec-152520a6f53a)
