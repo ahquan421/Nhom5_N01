@@ -1,4 +1,4 @@
-package Nhom5_N01.Midterm;
+package Midterm;
 
 public class ContinuousSignal implements Signal {
     private double bienDo;
@@ -31,4 +31,5 @@ public class ContinuousSignal implements Signal {
     public double getBuocSong() {
         return buocSong;
     }
+
 }

@@ -1,4 +1,4 @@
-package Nhom5_N01.Midterm;
+package Midterm;
 
 public interface Signal {
     double getBienDo();   

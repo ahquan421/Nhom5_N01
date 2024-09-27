@@ -1,4 +1,4 @@
-package Nhom5_N01.Midterm;
+package Midterm;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,4 +8,6 @@ public class Main {
 
         System.out.println("Gia tri X(4): " + radar.layGiaTriX(4));
     }
+
 }
+

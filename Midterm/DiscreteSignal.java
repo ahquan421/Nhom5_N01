@@ -1,4 +1,4 @@
-package Nhom5_N01.Midterm;
+package Midterm;
 public class DiscreteSignal implements Signal {
     private double bienDo;
     private double tanSo;
@@ -45,4 +45,3 @@ public class DiscreteSignal implements Signal {
         return n == 0 ? 1 : 0;
     }
 }
-
