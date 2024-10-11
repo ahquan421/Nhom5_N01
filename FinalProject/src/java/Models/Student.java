@@ -1,3 +1,5 @@
+package java.Models;
+
 public class Student {
     private int sinhvienID;
     private String hoten;
