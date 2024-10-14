@@ -1,10 +1,12 @@
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.regex.Pattern;
 
 public class Student {
     private int sinhvienID;
     private String hoten;
     private Gender gioitinh; 
-    private int namsinh;
+    private LocalDate ngaysinh;
     private String quequan;
     private String email;
 
@@ -54,11 +56,14 @@ public class Student {
         this.gioitinh = Gender.fromString(gioitinh);
     }
 
-    public int getNamsinh() {
-        return namsinh;
+    public LocalDate getNgaysinh() {
+        return ngaysinh;
     }
-    public void setNamsinh(int namsinh) {
-        this.namsinh = namsinh;
+    public void setNgaysinh(LocalDate ngaysinh) {
+        if (!isValidNgaysinh(ngaysinh)) {
+            throw new IllegalArgumentException("Ngày sinh không hợp lệ: " + ngaysinh);
+        }
+        this.ngaysinh = ngaysinh;
     }
 
     public String getQuequan() {
@@ -71,29 +76,36 @@ public class Student {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         if (!isValidEmail(email)) {
-            throw new IllegalArgumentException("Email khong hop le: " + email);
+            throw new IllegalArgumentException("Email không hợp lệ: " + email);
         }
         this.email = email;
     }
+
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return Pattern.compile(emailRegex).matcher(email).matches();
     }
 
-    public Student(int sinhvienID, String hoten, String gioitinh, int namsinh, String quequan, String email) {
+    private boolean isValidNgaysinh(LocalDate ngaysinh) {
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(ngaysinh, today);
+        return !ngaysinh.isAfter(today) && period.getYears() <= 100;
+    }
+
+    public Student(int sinhvienID, String hoten, String gioitinh, LocalDate ngaysinh, String quequan, String email) {
         setSinhvienID(sinhvienID);
         this.hoten = hoten;
         setGioitinh(gioitinh);
-        this.namsinh = namsinh;
+        setNgaysinh(ngaysinh);
         this.quequan = quequan;
         setEmail(email);
     }
 
     @Override
     public String toString() {
-        return "Student [sinhvienID=" + sinhvienID + ", hoten=" + hoten + ", gioitinh=" + gioitinh.getValue() + ", namsinh=" + namsinh + ", quequan=" + quequan + ", email=" + email + "]";
+        return "Student [sinhvienID=" + sinhvienID + ", hoten=" + hoten + ", gioitinh=" + gioitinh.getValue() + 
+                ", ngaysinh=" + ngaysinh + ", quequan=" + quequan + ", email=" + email + "]";
     }
 }
