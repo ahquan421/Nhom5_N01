@@ -5,39 +5,20 @@ import java.util.regex.Pattern;
 public class Student {
     private int sinhvienID;
     private String hoten;
-    private Gender gioitinh; 
+    private String gioitinh;
     private LocalDate ngaysinh;
     private String quequan;
     private String email;
-
-    public enum Gender {
-        NAM("Nam"),
-        NU("Nữ");
-        private String value;
-        Gender(String value) {
-            this.value = value;
-        }
-        public String getValue() {
-            return value;
-        }
-        public static Gender fromString(String text) {
-            for (Gender g : Gender.values()) {
-                if (g.value.equalsIgnoreCase(text)) {
-                    return g;
-                }
-            }
-            throw new IllegalArgumentException("Giới tính chỉ có thể là 'Nam' hoặc 'Nữ'.");
-        }
-    }
 
     public Student() {}
 
     public int getSinhvienID() {
         return sinhvienID;
     }
+
     public void setSinhvienID(int sinhvienID) {
         if (sinhvienID <= 0) {
-            throw new IllegalArgumentException("Ma sinh vien phai lon hơn 0.");
+            throw new IllegalArgumentException("Ma sinh vien phai lon hon 0.");
         }
         this.sinhvienID = sinhvienID;
     }
@@ -45,23 +26,29 @@ public class Student {
     public String getHoten() {
         return hoten;
     }
+
     public void setHoten(String hoten) {
         this.hoten = hoten;
     }
 
-    public Gender getGioitinh() {
+    public String getGioitinh() {
         return gioitinh;
     }
+
     public void setGioitinh(String gioitinh) {
-        this.gioitinh = Gender.fromString(gioitinh);
+        if (!gioitinh.equalsIgnoreCase("Nam") && !gioitinh.equalsIgnoreCase("Nu")) {
+            throw new IllegalArgumentException("Gioi tinh chi co the la 'Nam' hoac 'Nu'.");
+        }
+        this.gioitinh = gioitinh;
     }
 
     public LocalDate getNgaysinh() {
         return ngaysinh;
     }
+
     public void setNgaysinh(LocalDate ngaysinh) {
         if (!isValidNgaysinh(ngaysinh)) {
-            throw new IllegalArgumentException("Ngày sinh không hợp lệ: " + ngaysinh);
+            throw new IllegalArgumentException("Ngay sinh khong hop le: " + ngaysinh);
         }
         this.ngaysinh = ngaysinh;
     }
@@ -69,6 +56,7 @@ public class Student {
     public String getQuequan() {
         return quequan;
     }
+
     public void setQuequan(String quequan) {
         this.quequan = quequan;
     }
@@ -76,9 +64,10 @@ public class Student {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         if (!isValidEmail(email)) {
-            throw new IllegalArgumentException("Email không hợp lệ: " + email);
+            throw new IllegalArgumentException("Email khong hop le: " + email);
         }
         this.email = email;
     }
@@ -105,7 +94,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student [sinhvienID=" + sinhvienID + ", hoten=" + hoten + ", gioitinh=" + gioitinh.getValue() + 
+        return "Student [sinhvienID=" + sinhvienID + ", hoten=" + hoten + ", gioitinh=" + gioitinh + 
                 ", ngaysinh=" + ngaysinh + ", quequan=" + quequan + ", email=" + email + "]";
     }
 }

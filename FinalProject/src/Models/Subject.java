@@ -1,4 +1,3 @@
-
 import java.time.LocalDate;
 
 public class Subject {
@@ -45,15 +44,18 @@ public class Subject {
         return ngayketthuc;
     }
     public void setNgayketthuc(LocalDate ngayketthuc) {
+        if (ngayketthuc.isBefore(ngaybatdau)) {
+            throw new IllegalArgumentException("Ngay ket thuc khong the truoc ngay bat dau.");
+        }
         this.ngayketthuc = ngayketthuc;
-    }
+    }    
 
     public Subject(String monhocID, String tenmonhoc, int sotc, LocalDate ngaybatdau, LocalDate ngayketthuc) {
         this.monhocID = monhocID;
         this.tenmonhoc = tenmonhoc;
         setSotc(sotc);
-        this.ngaybatdau = ngaybatdau;
-        this.ngayketthuc = ngayketthuc;
+        setNgaybatdau(ngaybatdau);
+        setNgayketthuc(ngayketthuc);
     }
 
     @Override

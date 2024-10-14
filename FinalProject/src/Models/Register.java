@@ -52,7 +52,6 @@ public class Register {
     }
 
     private boolean isValidRegistrationDate(LocalDate ngaydangki) {
-        // Ngày đăng ký không được là trong tương lai
         return !ngaydangki.isAfter(LocalDate.now());
     }
     @Override
