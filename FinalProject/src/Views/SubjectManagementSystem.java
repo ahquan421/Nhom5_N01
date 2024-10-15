@@ -36,12 +36,12 @@ public class SubjectManagementSystem {
         JButton addButton = new JButton("Them mon hoc");
         JButton updateButton = new JButton("Sua mon hoc");
         JButton deleteButton = new JButton("Xoa mon hoc");
-        JButton exitButton = new JButton("Thoat"); // Nút thoát
+        JButton exitButton = new JButton("Thoat"); 
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(exitButton); // Thêm nút thoát vào buttonPanel
+        buttonPanel.add(exitButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
         
         addButton.addActionListener(new ActionListener() {

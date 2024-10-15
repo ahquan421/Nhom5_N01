@@ -73,11 +73,10 @@ public class LoginSystem {
                 if (authenticate(username, password, role)) {
                     JOptionPane.showMessageDialog(frame, "Dang nhap thanh cong!", "Thong bao", JOptionPane.INFORMATION_MESSAGE);
                     if (role.equals("Student")) {
-                        //Them dasboard dang ki sau
                     } else if (role.equals("Admin")) {
                         new TeacherManagementSystem();
                     }
-                    frame.dispose();
+                    frame.dispose(); 
                 } else {
                     JOptionPane.showMessageDialog(frame, "Ten dang nhap hoac mat khau sai!", "Loi", JOptionPane.ERROR_MESSAGE);
                 }

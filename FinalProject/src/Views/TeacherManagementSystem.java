@@ -1,6 +1,7 @@
 package Views;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -72,7 +73,6 @@ public class TeacherManagementSystem {
     }
 
     public void showTeacherManagement() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'showTeacherManagement'");
     }
 }
