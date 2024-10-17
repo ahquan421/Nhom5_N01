@@ -1,4 +1,4 @@
-package Models;
+
 import java.time.LocalDate;
 
 public class Register {
@@ -22,9 +22,6 @@ public class Register {
     }
 
     public void setNgaydangki(LocalDate ngaydangki) {
-        if (!isValidRegistrationDate(ngaydangki)) {
-            throw new IllegalArgumentException("Ngay dang ki khong hop le.");
-        }
         this.ngaydangki = ngaydangki;
     }
 
@@ -32,9 +29,6 @@ public class Register {
         return sinhvienID;
     }
     public void setSinhvienID(int sinhvienID) {
-        if (sinhvienID <= 0) {
-            throw new IllegalArgumentException("ID khong hop le.");
-        }
         this.sinhvienID = sinhvienID;
     }
 
@@ -47,14 +41,11 @@ public class Register {
 
     public Register(String madangki, LocalDate ngaydangki, int sinhvienID, String monhocID) {
         this.madangki = madangki;
-        setNgaydangki(ngaydangki);
-        setSinhvienID(sinhvienID); 
+        this.ngaydangki = ngaydangki;
+        this.sinhvienID = sinhvienID;
         this.monhocID = monhocID;
     }
 
-    private boolean isValidRegistrationDate(LocalDate ngaydangki) {
-        return !ngaydangki.isAfter(LocalDate.now());
-    }
     @Override
     public String toString() {
         return "Register [madangki=" + madangki + ", ngaydangki=" + ngaydangki + ", sinhvienID=" + sinhvienID + ", monhocID=" + monhocID + "]";

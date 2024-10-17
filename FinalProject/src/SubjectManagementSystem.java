@@ -1,10 +1,10 @@
-package Views;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,15 +16,14 @@ public class SubjectManagementSystem {
     private JTable subjectTable;
     private DefaultTableModel tableModel;
 
-    public static void main(String[] args) {
-        SubjectManagementSystem system = new SubjectManagementSystem();
-        system.showSubjectManagement();
-        system.loadSubjectsFromFile("DanhsachMH.txt");
+    public SubjectManagementSystem() {
+        showSubjectManagement();
+        loadSubjectsFromFile("DanhsachMH.txt");
     }
 
     public void showSubjectManagement() {
         frame = new JFrame("Subject Management");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 500);
         String[] columnNames = {"Ma mon hoc", "Ten mon hoc", "So tin chi", "Ngay bat dau", "Ngay ket thuc"};
         tableModel = new DefaultTableModel(columnNames, 0);
@@ -33,17 +32,17 @@ public class SubjectManagementSystem {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Them mon hoc");
-        JButton updateButton = new JButton("Sua mon hoc");
-        JButton deleteButton = new JButton("Xoa mon hoc");
-        JButton exitButton = new JButton("Thoat"); 
+        JButton addButton = new JButton("Add Subject");
+        JButton updateButton = new JButton("Update Subject");
+        JButton deleteButton = new JButton("Delete Subject");
+        JButton exitButton = new JButton("Return");
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(exitButton);
         frame.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,11 +68,18 @@ public class SubjectManagementSystem {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                TeacherManagementSystem teacherManagement = new TeacherManagementSystem();
-                teacherManagement.showTeacherManagement();
             }
         });
 
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.dispose();
+                new TeacherManagementSystem();
+            }
+        });
+
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -82,13 +88,12 @@ public class SubjectManagementSystem {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(",\\s*");
-
                 if (data.length == 5) {
-                    tableModel.addRow(new Object[]{ data[0], data[1], data[2], data[3], data[4] });
+                    tableModel.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4]});
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Loi khi doc file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Error read file: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -100,13 +105,13 @@ public class SubjectManagementSystem {
                 String credits = tableModel.getValueAt(i, 2).toString();
                 String startDate = tableModel.getValueAt(i, 3).toString();
                 String endDate = tableModel.getValueAt(i, 4).toString();
-    
+
                 String line = id + ", " + name + ", " + credits + ", " + startDate + ", " + endDate;
                 writer.write(line);
-                writer.newLine(); 
+                writer.newLine();
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Loi khi ghi file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Error writing file: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -123,11 +128,11 @@ public class SubjectManagementSystem {
             "Ngay bat dau (dd/mm/yyyy):", startDateField,
             "Ngay ket thuc (dd/mm/yyyy):", endDateField
         };
-        int option = JOptionPane.showConfirmDialog(null, message, "Them mon hoc", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, "Add Subject", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            StringBuilder errorMessage = new StringBuilder("Cac truong sau day khong duoc de trong:\n");
-    
+            StringBuilder errorMessage = new StringBuilder("The following fields cannot be left blank:\n");
             boolean hasError = false;
+
             if (codeField.getText().trim().isEmpty()) {
                 errorMessage.append("- Ma mon hoc\n");
                 hasError = true;
@@ -148,24 +153,24 @@ public class SubjectManagementSystem {
                 errorMessage.append("- Ngay ket thuc (dd/mm/yyyy)\n");
                 hasError = true;
             }
-    
+
             if (hasError) {
-                JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Loi", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Error!", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-    
+
             this.tableModel.addRow(new Object[]{
                 codeField.getText(), nameField.getText(),
                 creditsField.getText(), startDateField.getText(), endDateField.getText()
             });
             saveSubjectsToFile("DanhsachMH.txt");
         }
-    }     
+    }
 
     private void updateSubject() {
         int selectedRow = subjectTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Hay chon mot mon hoc de sua!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please select a subject to update!", "Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -183,7 +188,7 @@ public class SubjectManagementSystem {
             "Ngay ket thuc (dd/mm/yyyy):", endDateField
         };
 
-        int option = JOptionPane.showConfirmDialog(null, inputFields, "Sua mon hoc", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, inputFields, "Update Subject", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             subjectTable.setValueAt(idField.getText(), selectedRow, 0);
             subjectTable.setValueAt(nameField.getText(), selectedRow, 1);
@@ -198,15 +203,17 @@ public class SubjectManagementSystem {
     private void deleteSubject() {
         int selectedRow = subjectTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Hay chon mot mon hoc de xoa!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please select a subject to delete!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        int option = JOptionPane.showConfirmDialog(null, "Ban co chac chan muon xoa mon hoc nay?", "Xac nhan", JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION) {
+        int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to delete this subject?", "Delete Subject", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
             tableModel.removeRow(selectedRow);
-
             saveSubjectsToFile("DanhsachMH.txt");
         }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new SubjectManagementSystem());
     }
 }

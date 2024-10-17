@@ -1,5 +1,3 @@
-package Views;
-
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -14,7 +12,7 @@ public class StudentManagementSystem {
     private DefaultTableModel tableModel;
 
     public StudentManagementSystem() {
-        frame = new JFrame("Quan ly hoc sinh");
+        frame = new JFrame("Sutdent Management");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
 
@@ -24,10 +22,10 @@ public class StudentManagementSystem {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Them sinh vien");
-        JButton editButton = new JButton("Sua sinh vien");
-        JButton deleteButton = new JButton("Xoa sinh vien");
-        JButton exitButton = new JButton("Thoat");
+        JButton addButton = new JButton("Add Student");
+        JButton editButton = new JButton("Update Student");
+        JButton deleteButton = new JButton("Delete Student");
+        JButton exitButton = new JButton("Return");
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -65,41 +63,42 @@ public class StudentManagementSystem {
         });
 
         loadStudentsFromFile("DanhsachSV.txt");
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     private void addStudent() {
         JTextField idField = new JTextField();
         JTextField nameField = new JTextField();
-        JTextField genderField = new JTextField();
+        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nu"});
         JTextField yearField = new JTextField();
         JTextField hometownField = new JTextField();
         JTextField emailField = new JTextField();
-
+    
         Object[] inputFields = {
             "Ma sinh vien:", idField,
             "Ho ten:", nameField,
-            "Gioi tinh:", genderField,
+            "Gioi tinh:", genderComboBox,
             "Nam sinh:", yearField,
             "Que quan:", hometownField,
             "Email:", emailField
         };
-
-        int option = JOptionPane.showConfirmDialog(null, inputFields, "Them sinh vien", JOptionPane.OK_CANCEL_OPTION);
+    
+        int option = JOptionPane.showConfirmDialog(null, inputFields, "Add Student", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             try {
                 int id = Integer.parseInt(idField.getText());
                 String name = nameField.getText();
-                String gender = genderField.getText();
+                String gender = (String) genderComboBox.getSelectedItem(); 
                 int year = Integer.parseInt(yearField.getText());
                 String hometown = hometownField.getText();
                 String email = emailField.getText();
-
+    
                 tableModel.addRow(new Object[]{id, name, gender, year, hometown, email});
-
+    
                 saveStudentsToFile("DanhsachSV.txt");
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Vui long nhap ma sinh vien va nam sinh hop le!", "Loi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Vui long nhap day du thong tin!", "Loi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -110,36 +109,37 @@ public class StudentManagementSystem {
             JOptionPane.showMessageDialog(frame, "Vui long chon mot sinh vien de sua!", "Loi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         JTextField idField = new JTextField(studentTable.getValueAt(selectedRow, 0).toString());
         JTextField nameField = new JTextField(studentTable.getValueAt(selectedRow, 1).toString());
-        JTextField genderField = new JTextField(studentTable.getValueAt(selectedRow, 2).toString());
+        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nu"});
+        genderComboBox.setSelectedItem(studentTable.getValueAt(selectedRow, 2).toString());
         JTextField yearField = new JTextField(studentTable.getValueAt(selectedRow, 3).toString());
         JTextField hometownField = new JTextField(studentTable.getValueAt(selectedRow, 4).toString());
         JTextField emailField = new JTextField(studentTable.getValueAt(selectedRow, 5).toString());
-
+    
         Object[] inputFields = {
             "Ma sinh vien:", idField,
             "Ho ten:", nameField,
-            "Gioi tinh:", genderField,
+            "Gioi tinh:", genderComboBox,
             "Nam sinh:", yearField,
             "Que quan:", hometownField,
             "Email:", emailField
         };
-
+    
         int option = JOptionPane.showConfirmDialog(null, inputFields, "Sua sinh vien", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             try {
                 studentTable.setValueAt(Integer.parseInt(idField.getText()), selectedRow, 0);
                 studentTable.setValueAt(nameField.getText(), selectedRow, 1);
-                studentTable.setValueAt(genderField.getText(), selectedRow, 2);
+                studentTable.setValueAt(genderComboBox.getSelectedItem(), selectedRow, 2);
                 studentTable.setValueAt(Integer.parseInt(yearField.getText()), selectedRow, 3);
                 studentTable.setValueAt(hometownField.getText(), selectedRow, 4);
                 studentTable.setValueAt(emailField.getText(), selectedRow, 5);
-
+    
                 saveStudentsToFile("DanhsachSV.txt");
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Vui long nhap ma sinh vien va nam sinh hop le!", "Loi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "Vui long nhap thong tin hop le!", "Loi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -1,5 +1,3 @@
-package Views;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,75 +12,80 @@ public class LoginSystem {
     private JPasswordField passwordField;
 
     public LoginSystem() {
-        frame = new JFrame("He thong dang nhap");
+        frame = new JFrame("Login System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
+
         JLabel titleLabel = new JLabel("Login", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         gbc.gridx = 0;
-        gbc.gridy = 0; 
-        gbc.insets = new Insets(10, 0, 10, 0); 
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridwidth = 2;
         frame.add(titleLabel, gbc);
 
-        JLabel usernameLabel = new JLabel("Ten dang nhap:  ");
-        gbc.gridwidth = 1; 
-        gbc.gridx = 0; 
-        gbc.gridy = 1; 
+        JLabel usernameLabel = new JLabel("Username:  ");
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         frame.add(usernameLabel, gbc);
 
         usernameField = new JTextField(20);
-        gbc.gridx = 1; 
+        gbc.gridx = 1;
         frame.add(usernameField, gbc);
 
-        JLabel passwordLabel = new JLabel("Mat khau:");
-        gbc.gridx = 0; 
-        gbc.gridy = 2; 
+        JLabel passwordLabel = new JLabel("Password:");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
         frame.add(passwordLabel, gbc);
 
         passwordField = new JPasswordField(20);
-        gbc.gridx = 1; 
+        gbc.gridx = 1;
         frame.add(passwordField, gbc);
 
-        JLabel roleLabel = new JLabel("Vai tro:");
-        gbc.gridx = 0; 
-        gbc.gridy = 3; 
+        JLabel roleLabel = new JLabel("Role:");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         frame.add(roleLabel, gbc);
 
         String[] roles = {"Student", "Admin"};
         JComboBox<String> roleComboBox = new JComboBox<>(roles);
-        gbc.gridx = 1; 
+        gbc.gridx = 1;
         frame.add(roleComboBox, gbc);
 
-        JButton loginButton = new JButton("Dang nhap");
-        gbc.gridx = 0; 
-        gbc.gridy = 4; 
-        gbc.gridwidth = 2; 
+        JButton loginButton = new JButton("Login");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
         frame.add(loginButton, gbc);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                String password = new String(passwordField.getPassword());
+                String username = usernameField.getText().trim();
+                String password = new String(passwordField.getPassword()).trim();
                 String role = (String) roleComboBox.getSelectedItem();
 
+                if (username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Please enter your username and password! ", "Error!", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
                 if (authenticate(username, password, role)) {
-                    JOptionPane.showMessageDialog(frame, "Dang nhap thanh cong!", "Thong bao", JOptionPane.INFORMATION_MESSAGE);
                     if (role.equals("Student")) {
                     } else if (role.equals("Admin")) {
                         new TeacherManagementSystem();
                     }
-                    frame.dispose(); 
+                    frame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Ten dang nhap hoac mat khau sai!", "Loi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Incorrect username or password!", "Error!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
@@ -102,7 +105,7 @@ public class LoginSystem {
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Loi khi doc file: " + e.getMessage(), "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Error reading file: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -111,3 +114,5 @@ public class LoginSystem {
         SwingUtilities.invokeLater(LoginSystem::new);
     }
 }
+
+
