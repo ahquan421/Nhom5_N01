@@ -18,13 +18,13 @@ public class TeacherManagementSystem {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        JButton studentManagementButton = new JButton("Student Management");
+        JButton studentManagementButton = new JButton("Quan ly hoc sinh");
         studentManagementButton.setPreferredSize(new Dimension(150, 30));
 
-        JButton subjectManagementButton = new JButton("Subject Management");
+        JButton subjectManagementButton = new JButton("Quan ly mon hoc");
         subjectManagementButton.setPreferredSize(new Dimension(150, 30));
 
-        JButton logoutButton = new JButton("Log out");
+        JButton logoutButton = new JButton("Dang xuat");
         logoutButton.setPreferredSize(new Dimension(150, 30));
 
         buttonPanel.add(studentManagementButton);

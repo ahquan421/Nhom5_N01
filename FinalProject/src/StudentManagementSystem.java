@@ -15,7 +15,7 @@ public class StudentManagementSystem {
     private TableRowSorter<DefaultTableModel> rowSorter;
 
     public StudentManagementSystem() {
-        frame = new JFrame("He thong quan ly sinh vien");
+        frame = new JFrame("Quan ly sinh vien");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
 
@@ -28,7 +28,7 @@ public class StudentManagementSystem {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         JPanel filterPanel = new JPanel();
-        filterPanel.add(new JLabel("Tim kiem:"));
+        filterPanel.add(new JLabel("Find:"));
 
         String[] filterOptions = {"Ma sinh vien", "Ho ten", "Nam sinh"};
         filterComboBox = new JComboBox<>(filterOptions);
@@ -57,9 +57,9 @@ public class StudentManagementSystem {
 
         JPanel buttonPanel = new JPanel();
         JButton addButton = new JButton("Them sinh vien");
-        JButton editButton = new JButton("Cap nhat sinh vien");
+        JButton editButton = new JButton("Sua sinh vien");
         JButton deleteButton = new JButton("Xoa sinh vien");
-        JButton exitButton = new JButton("Quay lai");
+        JButton exitButton = new JButton("Thoat");
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -149,7 +149,7 @@ public class StudentManagementSystem {
                     boolean isError = false;
     
                     if (idText.isEmpty()) {
-                        missingFields.append("Ma sinh vien, ");
+                        missingFields.append("Vui long nhap: ");
                         isError = true;
                     } else if (!idText.matches("\\d{8}")) {
                         throw new IllegalArgumentException("Ma sinh vien phai co 8 chu so");
@@ -181,7 +181,7 @@ public class StudentManagementSystem {
                     saveStudentsToFile("DanhsachSV.txt");
                     isAdding = false;
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Vui long nhap day du thong tin hop le!", "Loi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Vui long nhap day du thong tin!", "Loi!", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(frame, ex.getMessage(), "Loi", JOptionPane.ERROR_MESSAGE);
                 }
@@ -194,7 +194,7 @@ public class StudentManagementSystem {
     private void updateStudent() {
         int selectedRow = studentTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Vui long chon mot sinh vien de sua!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Vui long chon mot sinh vien de xoa!", "Loi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

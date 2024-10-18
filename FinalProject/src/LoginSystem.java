@@ -75,6 +75,7 @@ public class LoginSystem {
 
                 if (authenticate(username, password, role)) {
                     if (role.equals("Student")) {
+                        new RegisterManagementSystem();
                     } else if (role.equals("Admin")) {
                         new TeacherManagementSystem();
                     }
