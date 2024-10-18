@@ -1,5 +1,3 @@
-package Models;
-
 import java.time.LocalDate;
 
 public class Register {

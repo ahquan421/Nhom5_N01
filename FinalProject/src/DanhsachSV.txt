@@ -1,0 +1,5 @@
+23010632,Nguyen Thi Tra Giang,Nu,2000,Ha Noi,a@gmail.com
+23010631,Bui Duc Hai,Nam,1999,Da Nang,b@gmail.com
+23010634,Le Van Chien,Nam,2001,Ho Chi Minh,chien@gmail.com
+23010633,Nguyen Thi Thuy Linh,Nu,2005,Hung Yen,thuylinh@412005
+23010630,Nguyen Thi My Le,Nu,2005,Thai Binh,le@gmail.com

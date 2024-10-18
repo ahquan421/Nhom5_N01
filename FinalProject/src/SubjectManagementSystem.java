@@ -1,5 +1,3 @@
-package Views;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -123,29 +121,44 @@ public class SubjectManagementSystem {
         JTextField creditsField = new JTextField();
         JTextField startDateField = new JTextField();
         JTextField endDateField = new JTextField();
-        Object[] message = {
-            "Ma mon hoc:", codeField,
-            "Ten mon hoc:", nameField,
-            "So tin chi:", creditsField,
-            "Ngay bat dau (dd/mm/yyyy):", startDateField,
-            "Ngay ket thuc (dd/mm/yyyy):", endDateField
-        };
-        int option = JOptionPane.showConfirmDialog(null, message, "Add Subject", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            StringBuilder errorMessage = new StringBuilder("The following fields cannot be left blank:\n");
-            boolean hasError = false;
-
+        
+        boolean hasError;
+        
+        do {
+            hasError = false;
+            StringBuilder errorMessage = new StringBuilder("The following fields cannot be left blank or invalid:\n");
+    
+            Object[] message = {
+                "Ma mon hoc:", codeField,
+                "Ten mon hoc:", nameField,
+                "So tin chi:", creditsField,
+                "Ngay bat dau (dd/mm/yyyy):", startDateField,
+                "Ngay ket thuc (dd/mm/yyyy):", endDateField
+            };
+    
+            int option = JOptionPane.showConfirmDialog(null, message, "Add Subject", JOptionPane.OK_CANCEL_OPTION);
+            if (option != JOptionPane.OK_OPTION) {
+                return; 
+            }
+    
             if (codeField.getText().trim().isEmpty()) {
                 errorMessage.append("- Ma mon hoc\n");
                 hasError = true;
             }
-            if (nameField.getText().trim().isEmpty()) {
-                errorMessage.append("- Ten mon hoc\n");
-                hasError = true;
-            }
             if (creditsField.getText().trim().isEmpty()) {
-                errorMessage.append("- So tin chi\n");
+                errorMessage.append("- So tin chi (Khong duoc de trong va phai la so > 0)\n");
                 hasError = true;
+            } else {
+                try {
+                    int credits = Integer.parseInt(creditsField.getText().trim());
+                    if (credits <= 0) {
+                        errorMessage.append("- So tin chi phai la so nguyen duong\n");
+                        hasError = true;
+                    }
+                } catch (NumberFormatException e) {
+                    errorMessage.append("- So tin chi phai la so nguyen duong\n");
+                    hasError = true;
+                }
             }
             if (startDateField.getText().trim().isEmpty()) {
                 errorMessage.append("- Ngay bat dau (dd/mm/yyyy)\n");
@@ -155,19 +168,19 @@ public class SubjectManagementSystem {
                 errorMessage.append("- Ngay ket thuc (dd/mm/yyyy)\n");
                 hasError = true;
             }
-
+    
             if (hasError) {
                 JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Error!", JOptionPane.WARNING_MESSAGE);
-                return;
             }
-
-            this.tableModel.addRow(new Object[]{
-                codeField.getText(), nameField.getText(),
-                creditsField.getText(), startDateField.getText(), endDateField.getText()
-            });
-            saveSubjectsToFile("DanhsachMH.txt");
-        }
-    }
+            
+        } while (hasError); 
+    
+        this.tableModel.addRow(new Object[]{
+            codeField.getText(), nameField.getText(),
+            creditsField.getText(), startDateField.getText(), endDateField.getText()
+        });
+        saveSubjectsToFile("DanhsachMH.txt");
+    }        
 
     private void updateSubject() {
         int selectedRow = subjectTable.getSelectedRow();
