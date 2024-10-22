@@ -22,7 +22,7 @@ như ArrayList, LinkedList, Map, ….
 các nghiệp vụ cho bài toán (tùy chọn).
 # 1. Sơ đồ khối yêu cầu
 ## 1.1  UML Class Diagram
-![image](https://github.com/user-attachments/assets/29c34f6a-b3e2-458c-819a-623327b822fe)
+![Untitled](https://github.com/user-attachments/assets/9127a77b-95bf-41e3-a505-32fb2e6af1b6)
 ## 1.2 UML Activity Diagram
 ### Thêm sinh viên:
 ![image](https://github.com/user-attachments/assets/883aa473-7c18-4af6-a87f-9aac52128926)
