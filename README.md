@@ -1,27 +1,14 @@
-# Group 5 - k17 N01
+# Group 5 - k17 N01: Hệ thông quản lý sinh viên
 Thành viên:
 1. Nguyễn Thị Thùy Linh - ID: 23010633
 2. Nguyễn Anh Quân - ID: 23010375
-# Bài tập lớn: 02
-Nội dung: 
-- Giao diện cửa sổ JavaFX.
-- Có chức năng quản lý sinh viên.
-+ Thêm, sửa, xóa sinh viên.
-+ Liệt kê thông tin về sinh viên, có thể lọc ra các sinh viên có điểm trung bình > n (n tùy chọn).
-- Có chức năng quản lý môn học.
-+ Thêm, sửa, xóa môn học.
-- Có chức năng đăng ký học cho sinh viên
-+ Sinh viên có thể đăng ký môn học mà mình muốn.
-- Có chức năng nhập điểm cho sinh viên
-+ Nhập điểm môn học mà sinh viên đã học bằng cách sử dụng chức năng này.
-- Dữ liệu được lưu trữ xuống file nhị phân
-+ Cần tạo các lớp liên quan đến “sinh viên”, “môn học” để đọc, ghi xuống 1 hay nhiều file.
-- Khi làm việc với dữ liệu trong bộ nhớ, dữ liệu cần được lưu trữ dưới dạng các Collection tùy chọn
-như ArrayList, LinkedList, Map, ….
-- Sinh viên có thể thêm các chức năng vào chương trình để ứng dụng phong phú hơn bằng cách thêm
-các nghiệp vụ cho bài toán (tùy chọn).
-# 1. Sơ đồ khối yêu cầu
-## 1.1  UML Class Diagram
+# Chức năng chính:
+- Thêm, sửa, xóa, tìm kiếm, sắp xếp sinh viên.
+- Thêm sửa xóa môn học.
+- Sinh viên đăng kí môn học.
+- Lưu thông tin sinh viên, môn học, đăng kí môn học vào file.
+# 1. UML của dự án
+## 1.1  UML Use Case
 ![Untitled](https://github.com/user-attachments/assets/9127a77b-95bf-41e3-a505-32fb2e6af1b6)
 ## 1.2 UML Activity Diagram
 ### Đăng nhập: 
@@ -43,3 +30,23 @@ các nghiệp vụ cho bài toán (tùy chọn).
 ### Đăng xuất: 
 ![activity-Login](https://github.com/user-attachments/assets/cfb67e32-8c33-435a-9f6e-dfa785b8898d)
 
+# 2. Giao diện của dự án
+![Screenshot 2024-10-21 045137](https://github.com/user-attachments/assets/fd7189e4-7316-45dd-8b4c-a59c908bb1d6)
+## 2.1 Đăng nhập:
+![Screenshot 2024-10-21 045137](https://github.com/user-attachments/assets/5cabdd32-83d4-4d59-a4cb-4e39032b76d0)
+## 2.2. Giao diện cho Admin
+![Screenshot 2024-10-21 045958](https://github.com/user-attachments/assets/79993e87-ee6a-4512-a75f-15bda9a79b73)
+### 2.2.1. Quản lý sinh viên 
+![Screenshot 2024-10-21 045210](https://github.com/user-attachments/assets/9dfb8f0a-ef46-4e96-bf69-b96a120b20a4)
+### 2.2.2 Quản lý môn học
+![Screenshot 2024-10-21 045235](https://github.com/user-attachments/assets/3b36c255-16d2-4785-b11e-4cb788184247)
+## 2.3. Giao diện cho sinh viên
+![Screenshot 2024-10-21 045644](https://github.com/user-attachments/assets/d055c630-9bd3-4c27-8929-6d44932f07aa)
+### 2.3.1. Đăng kí môn học
+![Screenshot 2024-10-21 045816](https://github.com/user-attachments/assets/93b71a35-d44b-439b-b9b5-c945d968647d)
+### 2.3.2. Xem thông tin sinh viên
+![Screenshot 2024-10-21 045713](https://github.com/user-attachments/assets/c33b8623-6bf2-46f4-887e-ef9e54f3f944)
+# Github của dự án:
+[Truy cập tại đây](https://github.com/ahquan421/Nhom5_N01)
+# Demo dự án
+[DEMO](https://www.youtube.com/watch?v=ss6OYKOVXQk) 
