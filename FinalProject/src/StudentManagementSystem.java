@@ -89,7 +89,7 @@ public class StudentManagementSystem {
         } else {
             String regex = "(?i).*" + text + ".*";
             switch (selectedIndex) {
-                case 0: 
+                case 0:
                     rowSorter.setRowFilter(RowFilter.regexFilter(regex, 0));
                     break;
                 case 1:
@@ -111,6 +111,7 @@ public class StudentManagementSystem {
         }
         return false;
     }
+
     private void addStudent() {
         boolean isAdding = true;
         String idText = "";
@@ -149,19 +150,17 @@ public class StudentManagementSystem {
                     boolean isError = false;
     
                     if (idText.isEmpty()) {
-                        missingFields.append("Vui lòng nhập: ");
+                        missingFields.append("Mã sinh viên, ");
                         isError = true;
                     } else if (studentIdExists(idText)) {
                         throw new IllegalArgumentException("Sinh viên đã tồn tại!");
                     }
-
-                    int id = Integer.parseInt(idText);
     
                     if (name.isEmpty()) {
                         missingFields.append("Họ tên, ");
                         isError = true;
                     }
-
+    
                     if (yearText.isEmpty()) {
                         missingFields.append("Năm sinh, ");
                         isError = true;
@@ -172,14 +171,14 @@ public class StudentManagementSystem {
                         throw new IllegalArgumentException(missingFields.toString());
                     }
     
-                    int year = Integer.parseInt(yearText);
-                    String gender = (String) genderComboBox.getSelectedItem();
+                    if (!yearText.matches("\\d+")) {
+                        throw new IllegalArgumentException("Năm sinh phải là số!");
+                    }
     
-                    tableModel.addRow(new Object[]{id, name, gender, year, hometown, email});
+                    String gender = (String) genderComboBox.getSelectedItem();
+                    tableModel.addRow(new Object[]{idText, name, gender, yearText, hometown, email});
                     saveStudentsToFile("DanhsachSV.txt");
                     isAdding = false;
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Vui lòng nhập đầy đủ thông tin!", "Lỗi!", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(frame, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
@@ -188,7 +187,7 @@ public class StudentManagementSystem {
             }
         }
     }    
-    
+
     private void updateStudent() {
         int selectedRow = studentTable.getSelectedRow();
         if (selectedRow == -1) {
@@ -196,13 +195,27 @@ public class StudentManagementSystem {
             return;
         }
     
-        JTextField idField = new JTextField(studentTable.getValueAt(selectedRow, 0).toString());
-        JTextField nameField = new JTextField(studentTable.getValueAt(selectedRow, 1).toString());
+        Object idValue = studentTable.getValueAt(selectedRow, 0);
+        Object nameValue = studentTable.getValueAt(selectedRow, 1);
+        Object genderValue = studentTable.getValueAt(selectedRow, 2);
+        Object yearValue = studentTable.getValueAt(selectedRow, 3);
+        Object hometownValue = studentTable.getValueAt(selectedRow, 4);
+        Object emailValue = studentTable.getValueAt(selectedRow, 5);
+    
+        String idText = idValue != null ? idValue.toString() : "";
+        String nameText = nameValue != null ? nameValue.toString() : "";
+        String genderText = genderValue != null ? genderValue.toString() : "Nam"; 
+        String yearText = yearValue != null ? yearValue.toString() : "";
+        String hometownText = hometownValue != null ? hometownValue.toString() : "";
+        String emailText = emailValue != null ? emailValue.toString() : "";
+    
+        JTextField idField = new JTextField(idText);
+        JTextField nameField = new JTextField(nameText);
         JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nữ"});
-        genderComboBox.setSelectedItem(studentTable.getValueAt(selectedRow, 2).toString());
-        JTextField yearField = new JTextField(studentTable.getValueAt(selectedRow, 3).toString());
-        JTextField hometownField = new JTextField(studentTable.getValueAt(selectedRow, 4).toString());
-        JTextField emailField = new JTextField(studentTable.getValueAt(selectedRow, 5).toString());
+        genderComboBox.setSelectedItem(genderText);
+        JTextField yearField = new JTextField(yearText);
+        JTextField hometownField = new JTextField(hometownText);
+        JTextField emailField = new JTextField(emailText);
     
         Object[] inputFields = {
             "Mã sinh viên:", idField,
@@ -219,57 +232,57 @@ public class StudentManagementSystem {
             int option = JOptionPane.showConfirmDialog(null, inputFields, "Cập nhật sinh viên", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
                 try {
-                    String idText = idField.getText();
-                    String name = nameField.getText();
-                    String yearText = yearField.getText();
-                    String hometown = hometownField.getText();
-                    String email = emailField.getText();
+                    String idInput = idField.getText();
+                    String nameInput = nameField.getText();
+                    String yearInput = yearField.getText();
+                    String hometownInput = hometownField.getText();
+                    String emailInput = emailField.getText();
     
                     StringBuilder missingFields = new StringBuilder("Vui lòng nhập: ");
                     boolean isError = false;
     
-                    if (idText.isEmpty()) {
+                    if (idInput.isEmpty()) {
                         missingFields.append("Mã sinh viên, ");
                         isError = true;
-                    }
-                    else if (studentIdExists(idText) && !idText.equals(studentTable.getValueAt(selectedRow, 0).toString())) {
+                    } else if (studentIdExists(idInput) && !idInput.equals(studentTable.getValueAt(selectedRow, 0).toString())) {
                         throw new IllegalArgumentException("Sinh viên đã tồn tại!");
                     }
     
-                    if (name.isEmpty()) {
+                    if (nameInput.isEmpty()) {
                         missingFields.append("Họ tên, ");
                         isError = true;
                     }
     
-                    if (yearText.isEmpty()) {
+                    if (yearInput.isEmpty()) {
                         missingFields.append("Năm sinh, ");
                         isError = true;
                     }
-
+    
                     if (isError) {
                         missingFields.setLength(missingFields.length() - 2);
                         throw new IllegalArgumentException(missingFields.toString());
                     }
     
-                    studentTable.setValueAt(idText, selectedRow, 0);
-                    studentTable.setValueAt(name, selectedRow, 1);
-                    studentTable.setValueAt(genderComboBox.getSelectedItem(), selectedRow, 2);
-                    studentTable.setValueAt(Integer.parseInt(yearText), selectedRow, 3);
-                    studentTable.setValueAt(hometown, selectedRow, 4);
-                    studentTable.setValueAt(email, selectedRow, 5);
+                    if (!yearInput.matches("\\d+")) {
+                        throw new IllegalArgumentException("Năm sinh phải là số!");
+                    }
     
+                    studentTable.setValueAt(idInput, selectedRow, 0);
+                    studentTable.setValueAt(nameInput, selectedRow, 1);
+                    studentTable.setValueAt(genderComboBox.getSelectedItem(), selectedRow, 2);
+                    studentTable.setValueAt(yearInput, selectedRow, 3);
+                    studentTable.setValueAt(hometownInput, selectedRow, 4);
+                    studentTable.setValueAt(emailInput, selectedRow, 5);
                     saveStudentsToFile("DanhsachSV.txt");
-                    isUpdating = false; 
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Vui lòng nhập thông tin hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    isUpdating = false;
                 } catch (IllegalArgumentException ex) {
                     JOptionPane.showMessageDialog(frame, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                isUpdating = false; 
+                isUpdating = false;
             }
         }
-    }        
+    }    
 
     private void deleteStudent() {
         int selectedRow = studentTable.getSelectedRow();
@@ -278,38 +291,38 @@ public class StudentManagementSystem {
             return;
         }
 
-        int option = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa sinh viên này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION) {
+        int confirm = JOptionPane.showConfirmDialog(frame, "Bạn có chắc muốn xóa sinh viên này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
             tableModel.removeRow(selectedRow);
             saveStudentsToFile("DanhsachSV.txt");
         }
     }
 
-    private void loadStudentsFromFile(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+    private void loadStudentsFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",\\s*");
-                tableModel.addRow(data);
+            while ((line = br.readLine()) != null) {
+                String[] studentData = line.split(",");
+                tableModel.addRow(studentData);
             }
         } catch (IOException e) {
-            System.out.println("Không thể tải file dữ liệu từ tệp: " + e.getMessage());
+            JOptionPane.showMessageDialog(frame, "Không thể đọc dữ liệu từ file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void saveStudentsToFile(String filePath) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+    private void saveStudentsToFile(String filename) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 for (int j = 0; j < tableModel.getColumnCount(); j++) {
-                    writer.print(tableModel.getValueAt(i, j));
+                    bw.write(tableModel.getValueAt(i, j).toString());
                     if (j < tableModel.getColumnCount() - 1) {
-                        writer.print(",");
+                        bw.write(",");
                     }
                 }
-                writer.println();
+                bw.newLine();
             }
         } catch (IOException e) {
-            System.out.println("Không thể lưu dữ liệu vào tệp: " + e.getMessage());
+            JOptionPane.showMessageDialog(frame, "Không thể ghi dữ liệu vào file!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
