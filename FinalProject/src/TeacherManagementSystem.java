@@ -7,7 +7,7 @@ public class TeacherManagementSystem {
     private JFrame frame;
 
     public TeacherManagementSystem() {
-        frame = new JFrame("Admin Dasboard");
+        frame = new JFrame("Admin Dashboard");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
         frame.setLayout(new BorderLayout());
@@ -18,13 +18,13 @@ public class TeacherManagementSystem {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 
-        JButton studentManagementButton = new JButton("Quan ly hoc sinh");
+        JButton studentManagementButton = new JButton("Quản lý học sinh");
         studentManagementButton.setPreferredSize(new Dimension(150, 30));
 
-        JButton subjectManagementButton = new JButton("Quan ly mon hoc");
+        JButton subjectManagementButton = new JButton("Quản lý môn học");
         subjectManagementButton.setPreferredSize(new Dimension(150, 30));
 
-        JButton logoutButton = new JButton("Dang xuat");
+        JButton logoutButton = new JButton("Đăng xuất");
         logoutButton.setPreferredSize(new Dimension(150, 30));
 
         buttonPanel.add(studentManagementButton);
@@ -43,6 +43,7 @@ public class TeacherManagementSystem {
         subjectManagementButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                frame.dispose(); 
                 new SubjectManagementSystem();
             }
         });
@@ -58,7 +59,7 @@ public class TeacherManagementSystem {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new TeacherManagementSystem());
     }

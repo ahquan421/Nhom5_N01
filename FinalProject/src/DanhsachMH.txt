@@ -1,7 +1,13 @@
-1, Toan roi rac, 3, 20/10/2023, 22/11/2023
-2, Giai tich, 3, 21/10/2023, 20/11/2023
-3, Lap trinh C, 3, 20/11/2023, 22/12/2023
-4, Co so du lieu, 3, 12/12/2020, 12/12/2022
-5, Lap trinh huong doi tuong, 3, 20/11/2023, 22/12/2023
-6, Lap trinh Web, 3, 20/11/2023, 22/12/2022
-7, Lap trinh Java, 3, 01/10/2024, 31/12/2024
+CSE21001, Toan roi rac, 3, 20/10/2023, 22/11/2023
+CSE21002, Giai tich, 2, 21/10/2023, 20/11/2023
+CSE21003, Lap trinh C, 3, 20/11/2023, 22/12/2023
+CSE21004, Co so du lieu, 3, 12/12/2020, 12/12/2022
+CSE21005, Lap trinh huong doi tuong, 3, 20/11/2023, 22/12/2023
+CSE21006, Lap trinh Web, 3, 20/11/2023, 22/12/2022
+CSE21007, Lap trinh Java, 3, 01/10/2024, 31/12/2024
+CSE21008, Cau truc du lieu, 4, 01/10/2024, 31/12/2024
+CSE21009, Toan Kinh Te, 3, 01/10/2023, 31/12/2023
+CSE21010, Mang may tinh, 2, 01/10/2024, 31/12/2024
+CSE21011, He dieu hanh, 2, 01/10/2024, 31/12/2024
+CSE21012, Ky thuat lap trinh, 4, 01/10/2024, 31/12/2024
+CSE21013, Phan tich va thiet ke he thong, 3, 01/10/2024, 31/12/2024

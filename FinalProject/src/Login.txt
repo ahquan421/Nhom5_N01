@@ -1,2 +1,1 @@
-Student1, 123, Student
 Admin1, 123, Admin

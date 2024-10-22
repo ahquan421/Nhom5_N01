@@ -15,11 +15,11 @@ public class StudentManagementSystem {
     private TableRowSorter<DefaultTableModel> rowSorter;
 
     public StudentManagementSystem() {
-        frame = new JFrame("Quan ly sinh vien");
+        frame = new JFrame("Quản lý sinh viên");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
 
-        tableModel = new DefaultTableModel(new String[]{"Ma sinh vien", "Ho ten", "Gioi tinh", "Nam sinh", "Que quan", "Email"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Mã sinh viên", "Họ tên", "Giới tính", "Năm sinh", "Quê quán", "Email"}, 0);
         studentTable = new JTable(tableModel);
         rowSorter = new TableRowSorter<>(tableModel);
         studentTable.setRowSorter(rowSorter);
@@ -30,7 +30,7 @@ public class StudentManagementSystem {
         JPanel filterPanel = new JPanel();
         filterPanel.add(new JLabel("Find:"));
 
-        String[] filterOptions = {"Ma sinh vien", "Ho ten", "Nam sinh"};
+        String[] filterOptions = {"Mã sinh viên", "Họ tên", "Năm sinh"};
         filterComboBox = new JComboBox<>(filterOptions);
         filterPanel.add(filterComboBox);
 
@@ -56,10 +56,10 @@ public class StudentManagementSystem {
         });
 
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Them sinh vien");
-        JButton editButton = new JButton("Sua sinh vien");
-        JButton deleteButton = new JButton("Xoa sinh vien");
-        JButton exitButton = new JButton("Thoat");
+        JButton addButton = new JButton("Thêm sinh viên");
+        JButton editButton = new JButton("Sửa sinh viên");
+        JButton deleteButton = new JButton("Xóa sinh viên");
+        JButton exitButton = new JButton("Thoát");
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -122,21 +122,21 @@ public class StudentManagementSystem {
         while (isAdding) {
             JTextField idField = new JTextField(idText);
             JTextField nameField = new JTextField(name);
-            JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nu"});
+            JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nữ"});
             JTextField yearField = new JTextField(yearText);
             JTextField hometownField = new JTextField(hometown);
             JTextField emailField = new JTextField(email);
     
             Object[] inputFields = {
-                    "Ma sinh vien:", idField,
-                    "Ho ten:", nameField,
-                    "Gioi tinh:", genderComboBox,
-                    "Nam sinh:", yearField,
-                    "Que quan:", hometownField,
-                    "Email:", emailField
+                "Mã sinh viên:", idField,
+                "Họ tên:", nameField,
+                "Giới tính:", genderComboBox,
+                "Năm sinh:", yearField,
+                "Quê quán:", hometownField,
+                "Email:", emailField
             };
     
-            int option = JOptionPane.showConfirmDialog(null, inputFields, "Them sinh vien", JOptionPane.OK_CANCEL_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, inputFields, "Thêm sinh viên", JOptionPane.OK_CANCEL_OPTION);
             if (option == JOptionPane.OK_OPTION) {
                 try {
                     idText = idField.getText();
@@ -145,27 +145,25 @@ public class StudentManagementSystem {
                     hometown = hometownField.getText();
                     email = emailField.getText();
     
-                    StringBuilder missingFields = new StringBuilder("Vui long nhap: ");
+                    StringBuilder missingFields = new StringBuilder("Vui lòng nhập: ");
                     boolean isError = false;
     
                     if (idText.isEmpty()) {
-                        missingFields.append("Vui long nhap: ");
+                        missingFields.append("Vui lòng nhập: ");
                         isError = true;
-                    } else if (!idText.matches("\\d{8}")) {
-                        throw new IllegalArgumentException("Ma sinh vien phai co 8 chu so");
                     } else if (studentIdExists(idText)) {
-                        throw new IllegalArgumentException("Sinh vien da ton tai!");
+                        throw new IllegalArgumentException("Sinh viên đã tồn tại!");
                     }
 
                     int id = Integer.parseInt(idText);
     
                     if (name.isEmpty()) {
-                        missingFields.append("Ho ten, ");
+                        missingFields.append("Họ tên, ");
                         isError = true;
                     }
 
                     if (yearText.isEmpty()) {
-                        missingFields.append("Nam sinh, ");
+                        missingFields.append("Năm sinh, ");
                         isError = true;
                     }
     
@@ -181,9 +179,9 @@ public class StudentManagementSystem {
                     saveStudentsToFile("DanhsachSV.txt");
                     isAdding = false;
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Vui long nhap day du thong tin!", "Loi!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Vui lòng nhập đầy đủ thông tin!", "Lỗi!", JOptionPane.ERROR_MESSAGE);
                 } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(frame, ex.getMessage(), "Loi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 isAdding = false;
@@ -194,52 +192,93 @@ public class StudentManagementSystem {
     private void updateStudent() {
         int selectedRow = studentTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Vui long chon mot sinh vien de xoa!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Vui lòng chọn 1 sinh viên để sửa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         JTextField idField = new JTextField(studentTable.getValueAt(selectedRow, 0).toString());
         JTextField nameField = new JTextField(studentTable.getValueAt(selectedRow, 1).toString());
-        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nu"});
+        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Nam", "Nữ"});
         genderComboBox.setSelectedItem(studentTable.getValueAt(selectedRow, 2).toString());
         JTextField yearField = new JTextField(studentTable.getValueAt(selectedRow, 3).toString());
         JTextField hometownField = new JTextField(studentTable.getValueAt(selectedRow, 4).toString());
         JTextField emailField = new JTextField(studentTable.getValueAt(selectedRow, 5).toString());
-
+    
         Object[] inputFields = {
-                "Ma sinh vien:", idField,
-                "Ho ten:", nameField,
-                "Gioi tinh:", genderComboBox,
-                "Nam sinh:", yearField,
-                "Que quan:", hometownField,
-                "Email:", emailField
+            "Mã sinh viên:", idField,
+            "Họ tên:", nameField,
+            "Giới tính:", genderComboBox,
+            "Năm sinh:", yearField,
+            "Quê quán:", hometownField,
+            "Email:", emailField
         };
+    
+        boolean isUpdating = true;
+    
+        while (isUpdating) {
+            int option = JOptionPane.showConfirmDialog(null, inputFields, "Cập nhật sinh viên", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                try {
+                    String idText = idField.getText();
+                    String name = nameField.getText();
+                    String yearText = yearField.getText();
+                    String hometown = hometownField.getText();
+                    String email = emailField.getText();
+    
+                    StringBuilder missingFields = new StringBuilder("Vui lòng nhập: ");
+                    boolean isError = false;
+    
+                    if (idText.isEmpty()) {
+                        missingFields.append("Mã sinh viên, ");
+                        isError = true;
+                    }
+                    else if (studentIdExists(idText) && !idText.equals(studentTable.getValueAt(selectedRow, 0).toString())) {
+                        throw new IllegalArgumentException("Sinh viên đã tồn tại!");
+                    }
+    
+                    if (name.isEmpty()) {
+                        missingFields.append("Họ tên, ");
+                        isError = true;
+                    }
+    
+                    if (yearText.isEmpty()) {
+                        missingFields.append("Năm sinh, ");
+                        isError = true;
+                    }
 
-        int option = JOptionPane.showConfirmDialog(null, inputFields, "Cap nhat sinh vien", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            try {
-                studentTable.setValueAt(Integer.parseInt(idField.getText()), selectedRow, 0);
-                studentTable.setValueAt(nameField.getText(), selectedRow, 1);
-                studentTable.setValueAt(genderComboBox.getSelectedItem(), selectedRow, 2);
-                studentTable.setValueAt(Integer.parseInt(yearField.getText()), selectedRow, 3);
-                studentTable.setValueAt(hometownField.getText(), selectedRow, 4);
-                studentTable.setValueAt(emailField.getText(), selectedRow, 5);
-
-                saveStudentsToFile("DanhsachSV.txt");
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(frame, "Vui long nhap thong tin hop le!", "Loi", JOptionPane.ERROR_MESSAGE);
+                    if (isError) {
+                        missingFields.setLength(missingFields.length() - 2);
+                        throw new IllegalArgumentException(missingFields.toString());
+                    }
+    
+                    studentTable.setValueAt(idText, selectedRow, 0);
+                    studentTable.setValueAt(name, selectedRow, 1);
+                    studentTable.setValueAt(genderComboBox.getSelectedItem(), selectedRow, 2);
+                    studentTable.setValueAt(Integer.parseInt(yearText), selectedRow, 3);
+                    studentTable.setValueAt(hometown, selectedRow, 4);
+                    studentTable.setValueAt(email, selectedRow, 5);
+    
+                    saveStudentsToFile("DanhsachSV.txt");
+                    isUpdating = false; 
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Vui lòng nhập thông tin hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(frame, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                isUpdating = false; 
             }
         }
-    }
+    }        
 
     private void deleteStudent() {
         int selectedRow = studentTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Vui long chon mot sinh vien de xoa!", "Loi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Vui lòng chọn 1 sinh viên để xóa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        int option = JOptionPane.showConfirmDialog(null, "Ban co chac chan muon xoa sinh vien nay?", "Xac nhan", JOptionPane.YES_NO_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa sinh viên này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
             tableModel.removeRow(selectedRow);
             saveStudentsToFile("DanhsachSV.txt");
@@ -254,7 +293,7 @@ public class StudentManagementSystem {
                 tableModel.addRow(data);
             }
         } catch (IOException e) {
-            System.out.println("Khong the tai du lieu tu tep: " + e.getMessage());
+            System.out.println("Không thể tải file dữ liệu từ tệp: " + e.getMessage());
         }
     }
 
@@ -270,7 +309,7 @@ public class StudentManagementSystem {
                 writer.println();
             }
         } catch (IOException e) {
-            System.out.println("Khong the luu du lieu vao tep: " + e.getMessage());
+            System.out.println("Không thể lưu dữ liệu vào tệp: " + e.getMessage());
         }
     }
 

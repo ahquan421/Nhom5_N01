@@ -12,12 +12,12 @@ public class LoginSystem {
     private JPasswordField passwordField;
 
     public LoginSystem() {
-        frame = new JFrame("Login System");
+        frame = new JFrame("Hệ thống đăng nhập");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 500);
+        frame.setSize(700, 500);  
         frame.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
+       
         JLabel titleLabel = new JLabel("Login", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         gbc.gridx = 0;
@@ -64,24 +64,20 @@ public class LoginSystem {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
                 String role = (String) roleComboBox.getSelectedItem();
-
-                if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "Please enter your username and password! ", "Error!", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
 
                 if (authenticate(username, password, role)) {
                     if (role.equals("Student")) {
-                        new RegisterManagementSystem();
+                        frame.dispose();
+                        new DangKyMonHoc(username, username).setVisible(true); 
                     } else if (role.equals("Admin")) {
+                        frame.dispose();
                         new TeacherManagementSystem();
                     }
-                    frame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Incorrect username or password!", "Error!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Tên đăng nhập hoặc mật khẩu sai!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -91,29 +87,48 @@ public class LoginSystem {
     }
 
     private boolean authenticate(String username, String password, String role) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("Login.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",\\s*");
-                if (data.length == 3) {
-                    String fileUsername = data[0];
-                    String filePassword = data[1];
-                    String fileRole = data[2];
-
-                    if (fileUsername.equals(username) && filePassword.equals(password) && fileRole.equals(role)) {
-                        return true;
+        if (role.equalsIgnoreCase("admin")) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("Login.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(",\\s*");
+                    if (data.length == 3) {
+                        String fileUsername = data[0];
+                        String filePassword = data[1];
+                        String fileRole = data[2];
+    
+                        if (fileUsername.equals(username) && filePassword.equals(password) && fileRole.equals(role)) {
+                            return true;
+                        }
                     }
                 }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(frame, "Lỗi khi đọc file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Error reading file: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+        } else if (role.equalsIgnoreCase("student")) {
+            try (BufferedReader reader = new BufferedReader(new FileReader("DanhsachSV.txt"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(",\\s*");
+                    if (data.length >= 3) {
+                        String studentId = data[0];  
+                        String birthYear = data[3];  
+                        
+                        if (studentId.equals(username) && birthYear.equals(password)) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(frame, "Lỗi khi đọc file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    
         return false;
     }
+    
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(LoginSystem::new);
+        SwingUtilities.invokeLater(LoginSystem::new); 
     }
 }
-
-

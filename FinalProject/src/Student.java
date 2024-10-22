@@ -1,19 +1,17 @@
-import java.time.LocalDate;
-
 public class Student {
-    private int sinhvienID;
+    private String sinhvienID;
     private String hoten;
     private String gioitinh;
-    private LocalDate ngaysinh;
+    private int namsinh;
     private String quequan;
     private String email;
 
     public Student() {}
 
-    public int getSinhvienID() {
+    public String getSinhvienID() {
         return sinhvienID;
     }
-    public void setSinhvienID(int sinhvienID) {
+    public void setSinhvienID(String sinhvienID) {
         this.sinhvienID = sinhvienID;
     }
 
@@ -27,23 +25,21 @@ public class Student {
     public String getGioitinh() {
         return gioitinh;
     }
-
     public void setGioitinh(String gioitinh) {
         this.gioitinh = gioitinh;
     }
 
-    public LocalDate getNgaysinh() {
-        return ngaysinh;
+    public int getNamsinh() {
+        return namsinh;
     }
 
-    public void setNgaysinh(LocalDate ngaysinh) {
-        this.ngaysinh = ngaysinh;
+    public void setNamsinh(int namsinh) {
+        this.namsinh = namsinh;
     }
 
     public String getQuequan() {
         return quequan;
     }
-
     public void setQuequan(String quequan) {
         this.quequan = quequan;
     }
@@ -51,16 +47,14 @@ public class Student {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public Student(int sinhvienID, String hoten, String gioitinh, LocalDate ngaysinh, String quequan, String email) {
+    public Student(String sinhvienID, String hoten, String gioitinh, int namsinh, String quequan, String email) {
         this.sinhvienID = sinhvienID;
         this.hoten = hoten;
-        this.gioitinh = gioitinh;
-        this.ngaysinh = ngaysinh;
+        this.namsinh = namsinh;
         this.quequan = quequan;
         this.email = email;
     }
@@ -68,6 +62,6 @@ public class Student {
     @Override
     public String toString() {
         return "Student [sinhvienID=" + sinhvienID + ", hoten=" + hoten + ", gioitinh=" + gioitinh + 
-                ", ngaysinh=" + ngaysinh + ", quequan=" + quequan + ", email=" + email + "]";
+                ", ngaysinh=" + namsinh + ", quequan=" + quequan + ", email=" + email + "]";
     }
 }

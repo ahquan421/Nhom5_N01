@@ -22,21 +22,21 @@ public class SubjectManagementSystem {
     }
 
     public void showSubjectManagement() {
-        frame = new JFrame("Quan ly mon hoc");
+        frame = new JFrame("Quản lý môn học");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 500);
         
-        String[] columnNames = {"Ma mon hoc", "Ten mon hoc", "So tin chi", "Ngay bat dau", "Ngay ket thuc"};
+        String[] columnNames = {"Mã môn học", "Tên môn học", "Số tín chỉ", "Ngày bắt đầu", "Ngày kết thúc"};
         tableModel = new DefaultTableModel(columnNames, 0);
         subjectTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(subjectTable);
         frame.add(scrollPane, BorderLayout.CENTER);
     
         JPanel buttonPanel = new JPanel();
-        JButton addButton = new JButton("Them mon hoc");
-        JButton updateButton = new JButton("Sua mon hoc");
-        JButton deleteButton = new JButton("Xoa mon hoc");
-        JButton exitButton = new JButton("Thoat");
+        JButton addButton = new JButton("Thêm môn học");
+        JButton updateButton = new JButton("Sửa môn học");
+        JButton deleteButton = new JButton("Xóa môn học");
+        JButton exitButton = new JButton("Trở lại");
     
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
@@ -95,7 +95,7 @@ public class SubjectManagementSystem {
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Khong doc duoc file: " + e.getMessage(), "Loi!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Lỗi đọc file: " + e.getMessage(), "Lỗi!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -113,7 +113,7 @@ public class SubjectManagementSystem {
                 writer.newLine();
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Loi ghi tep tin: " + e.getMessage(), "Loi!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Lỗi viết file: " + e.getMessage(), "lỗi!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -128,51 +128,51 @@ public class SubjectManagementSystem {
         
         do {
             hasError = false;
-            StringBuilder errorMessage = new StringBuilder("Cac truong hop sau khong duoc de trong hoac khong hop le:\n");
+            StringBuilder errorMessage = new StringBuilder("Những trường sau không được để trống hoặc sai:\n");
     
             Object[] message = {
-                "Ma mon hoc:", codeField,
-                "Ten mon hoc:", nameField,
-                "So tin chi:", creditsField,
-                "Ngay bat dau (dd/mm/yyyy):", startDateField,
-                "Ngay ket thuc (dd/mm/yyyy):", endDateField
+                "Mã môn học:", codeField,
+                "Tên môn học:", nameField,
+                "Số tín chỉ:", creditsField,
+                "Ngày bắt đầu  (dd/mm/yyyy):", startDateField,
+                "Ngày kết thúc (dd/mm/yyyy):", endDateField
             };
     
-            int option = JOptionPane.showConfirmDialog(null, message, "Them mon hoc", JOptionPane.OK_CANCEL_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, message, "Thêm môn học", JOptionPane.OK_CANCEL_OPTION);
             if (option != JOptionPane.OK_OPTION) {
                 return; 
             }
     
             if (codeField.getText().trim().isEmpty()) {
-                errorMessage.append("- Ma mon hoc\n");
+                errorMessage.append("- Mã môn học\n");
                 hasError = true;
             }
             if (creditsField.getText().trim().isEmpty()) {
-                errorMessage.append("- So tin chi (Khong duoc de trong va phai la so > 0)\n");
+                errorMessage.append("- Số tín chỉ (không được để trống và > 0)\n");
                 hasError = true;
             } else {
                 try {
                     int credits = Integer.parseInt(creditsField.getText().trim());
                     if (credits <= 0) {
-                        errorMessage.append("- So tin chi phai la so nguyen duong\n");
+                        errorMessage.append("- Số tín chỉ phải là số nguyên dương.\n");
                         hasError = true;
                     }
                 } catch (NumberFormatException e) {
-                    errorMessage.append("- So tin chi phai la so nguyen duong\n");
+                    errorMessage.append("- Số tín chỉ phải là số nguyên dương.\n");
                     hasError = true;
                 }
             }
             if (startDateField.getText().trim().isEmpty()) {
-                errorMessage.append("- Ngay bat dau (dd/mm/yyyy)\n");
+                errorMessage.append("- Ngày bắt đầu (dd/mm/yyyy)\n");
                 hasError = true;
             }
             if (endDateField.getText().trim().isEmpty()) {
-                errorMessage.append("- Ngay ket thuc (dd/mm/yyyy)\n");
+                errorMessage.append("- Ngày kết thúc (dd/mm/yyyy)\n");
                 hasError = true;
             }
     
             if (hasError) {
-                JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Loi!", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Lỗi!", JOptionPane.WARNING_MESSAGE);
             }
             
         } while (hasError); 
@@ -187,43 +187,89 @@ public class SubjectManagementSystem {
     private void updateSubject() {
         int selectedRow = subjectTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Vui long chon 1 mon hoc de sua!", "Loi!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Vui lòng chọn 1 môn học để sửa!", "Lỗi!", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         JTextField idField = new JTextField(subjectTable.getValueAt(selectedRow, 0).toString());
         JTextField nameField = new JTextField(subjectTable.getValueAt(selectedRow, 1).toString());
         JTextField creditsField = new JTextField(subjectTable.getValueAt(selectedRow, 2).toString());
         JTextField startDateField = new JTextField(subjectTable.getValueAt(selectedRow, 3).toString());
         JTextField endDateField = new JTextField(subjectTable.getValueAt(selectedRow, 4).toString());
-
-        Object[] inputFields = {
-            "Ma mon hoc:", idField,
-            "Ten mon hoc:", nameField,
-            "So tin chi:", creditsField,
-            "Ngay bat dau (dd/mm/yyyy):", startDateField,
-            "Ngay ket thuc (dd/mm/yyyy):", endDateField
-        };
-
-        int option = JOptionPane.showConfirmDialog(null, inputFields, "Sua mon hoc", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            subjectTable.setValueAt(idField.getText(), selectedRow, 0);
-            subjectTable.setValueAt(nameField.getText(), selectedRow, 1);
-            subjectTable.setValueAt(creditsField.getText(), selectedRow, 2);
-            subjectTable.setValueAt(startDateField.getText(), selectedRow, 3);
-            subjectTable.setValueAt(endDateField.getText(), selectedRow, 4);
-
-            saveSubjectsToFile("DanhsachMH.txt");
-        }
+    
+        boolean hasError;
+        
+        do {
+            hasError = false;
+            Object[] inputFields = {
+                "Mã môn học:", idField,
+                "Tên môn học:", nameField,
+                "Số tín chỉ:", creditsField,
+                "Ngày bắt đầu (dd/mm/yyyy):", startDateField,
+                "Ngày kết thúc (dd/mm/yyyy):", endDateField
+            };
+    
+            int option = JOptionPane.showConfirmDialog(null, inputFields, "Sửa môn học", JOptionPane.OK_CANCEL_OPTION);
+            if (option != JOptionPane.OK_OPTION) {
+                return;
+            }
+    
+            StringBuilder errorMessage = new StringBuilder("Những trường sau không được để trống hoặc sai:\n");
+    
+            if (idField.getText().trim().isEmpty()) {
+                errorMessage.append("- Mã môn học\n");
+                hasError = true;
+            }
+    
+            if (creditsField.getText().trim().isEmpty()) {
+                errorMessage.append("- Số tín chỉ (không được để trống và > 0)\n");
+                hasError = true;
+            } else {
+                try {
+                    int credits = Integer.parseInt(creditsField.getText().trim());
+                    if (credits <= 0) {
+                        errorMessage.append("- Số tín chỉ phải là số nguyên dương.\n");
+                        hasError = true;
+                    }
+                } catch (NumberFormatException e) {
+                    errorMessage.append("- Số tín chỉ phải là số nguyên dương.\n");
+                    hasError = true;
+                }
+            }
+    
+            if (startDateField.getText().trim().isEmpty()) {
+                errorMessage.append("- Ngày bắt đầu (dd/mm/yyyy)\n");
+                hasError = true;
+            }
+    
+            if (endDateField.getText().trim().isEmpty()) {
+                errorMessage.append("- Ngày kết thúc (dd/mm/yyyy)\n");
+                hasError = true;
+            }
+    
+            if (hasError) {
+                JOptionPane.showMessageDialog(this.frame, errorMessage.toString(), "Lỗi!", JOptionPane.WARNING_MESSAGE);
+            }
+            
+        } while (hasError); 
+    
+        subjectTable.setValueAt(idField.getText(), selectedRow, 0);
+        subjectTable.setValueAt(nameField.getText(), selectedRow, 1);
+        subjectTable.setValueAt(creditsField.getText(), selectedRow, 2);
+        subjectTable.setValueAt(startDateField.getText(), selectedRow, 3);
+        subjectTable.setValueAt(endDateField.getText(), selectedRow, 4);
+    
+        saveSubjectsToFile("DanhsachMH.txt");
     }
+        
 
     private void deleteSubject() {
         int selectedRow = subjectTable.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(frame, "Vui long chon 1 mon hoc de xoa!", "Loi!", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Vui lòng chọn 1 môn học để xóa!", "Lỗi!", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        int confirm = JOptionPane.showConfirmDialog(frame, "Ban co chac muon xoa mon hoc nay khong?", "Xoa mon hoc", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(frame, "Bạn có chắc muốn xóa môn học này không?", "Xóa môn học", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             tableModel.removeRow(selectedRow);
             saveSubjectsToFile("DanhsachMH.txt");
